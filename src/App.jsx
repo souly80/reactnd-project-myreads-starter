@@ -1,13 +1,14 @@
 import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
+import {Menu} from "./components/menu/Menu";
 
 class BooksApp extends React.Component {
   state;
 
   constructor(props) {
     super(props)
-      state = {
+      this.state = {
           /**
            * TODO: Instead of using this state variable to keep track of which page
            * we're on, use the URL in the browser's address bar. This will ensure that
@@ -44,9 +45,7 @@ class BooksApp extends React.Component {
           </div>
         ) : (
           <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
+            <Menu  title={'MyReads'}/>
             <div className="list-books-content">
               <div>
                 <div className="bookshelf">
