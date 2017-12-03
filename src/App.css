@@ -25,9 +25,6 @@ body, .app {
   }
 }
 
-.bookshelf-title {
-  border-bottom: 1px solid #dedede;
-}
 .bookshelf-books {
   text-align: center;
 }
