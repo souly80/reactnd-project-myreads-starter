@@ -1,17 +1,21 @@
+// @flow
+
 import * as React from "react";
 import './book.style.css';
-import {BookshelfChanger, Option} from "../bookshelf-changer/bookshelf-changer";
+import {BookshelfChanger} from "../bookshelf-changer/bookshelf-changer";
+import type {Option} from "../bookshelf-changer/bookshelf-changer";
 
-export type BookPropTypes = {
+export type BookModel = {
+    id?: string | number;
     imgPath: string;
     title: string;
     authors: string;
 }
 
-export class Book extends React.PureComponent<BookPropTypes,any> {
+export class Book extends React.PureComponent<BookModel,any> {
 
     options: Array<Option>;
-    constructor(props: BookPropTypes) {
+    constructor(props: BookModel) {
         super(props)
         this.options = [];
         this.options.push({

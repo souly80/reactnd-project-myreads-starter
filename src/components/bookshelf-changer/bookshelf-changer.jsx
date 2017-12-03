@@ -1,3 +1,5 @@
+// @flow
+
 import * as React from "react";
 import './bookshelf-changer.style.css';
 
@@ -16,8 +18,8 @@ export class BookshelfChanger extends React.PureComponent<BookshelfChangerPropTy
     renderOptions() {
         const{options} = this.props;
         let retValues: any[] = [];
-        options.map((option: Option) => {
-            retValues.push(<option value={option.value} disabled={option.isDisabled}>{option.label}</option>);
+        options.map((option: Option, index: number) => {
+            retValues.push(<option key={index} value={option.value} disabled={option.isDisabled}>{option.label}</option>);
         });
         return retValues;
     }
