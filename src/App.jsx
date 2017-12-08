@@ -1,5 +1,5 @@
 import React from 'react'
-// import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './services/BooksAPI';
 import './App.css'
 import {Menu} from "./components/menu/Menu";
 import {BookshelfTitle} from "./components/bookshelf-title/bookshelf-title";
@@ -7,12 +7,13 @@ import {Book} from "./components/book/book";
 import {BookList} from "./components/book-list/book-list";
 
 class BooksApp extends React.Component {
-    listCurrentReading;
-    listWantToRead;
-    listRead;
+
   constructor(props) {
     super(props)
       this.state = {
+          listCurrentReading: [],
+          listWantToRead: [],
+          listRead: [],
           /**
            * TODO: Instead of using this state variable to keep track of which page
            * we're on, use the URL in the browser's address bar. This will ensure that
@@ -20,7 +21,9 @@ class BooksApp extends React.Component {
            * pages, as well as provide a good URL they can bookmark and share.
            */
           showSearchPage: false
-      }
+      };
+
+      /*
       this.listCurrentReading = [
           {
               imgPath: 'url("http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api")',
@@ -49,7 +52,6 @@ class BooksApp extends React.Component {
               id:1
           }
       ];
-
       this.listRead = [
           {
               imgPath: 'url("http://books.google.com/books/content?id=pD6arNyKyi8C&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE70Rw0CCwNZh0SsYpQTkMbvz23npqWeUoJvVbi_gXla2m2ie_ReMWPl0xoU8Quy9fk0Zhb3szmwe8cTe4k7DAbfQ45FEzr9T7Lk0XhVpEPBvwUAztOBJ6Y0QPZylo4VbB7K5iRSk&source=gbs_api")',
@@ -70,6 +72,31 @@ class BooksApp extends React.Component {
               id:2
           }
       ]
+      */
+  }
+
+  componentDidMount() {
+      BooksAPI.getAll().then((allData) => {
+          console.log(allData);
+          var listCurrentReading = [];
+          var listWantToRead = [];
+          var listRead = [];
+          allData.forEach(data => {
+              if(data.shelf === 'read') {
+                  listRead.push(data);
+                  //this.setState(listRead);
+              }
+              else if (data.shelf === 'wantToRead') {
+                  listWantToRead.push(data);
+                  //this.setState(listWantToRead);
+              }
+              else if (data.shelf === 'currentlyReading') {
+                  listCurrentReading.push(data);
+                  //this.setState(listCurrentReading)
+              }
+          });
+          this.setState({listCurrentReading,listWantToRead,listRead});
+      });
   }
 
   render() {
@@ -103,15 +130,15 @@ class BooksApp extends React.Component {
               <div>
                 <div className="bookshelf">
                     <BookshelfTitle title="Currently Reading"/>
-                  <BookList list={this.listCurrentReading}/>
+                  <BookList list={this.state.listCurrentReading}/>
                 </div>
                 <div className="bookshelf">
                     <BookshelfTitle title="Want to Read"/>
-                  <BookList list={this.listWantToRead}/>
+                  <BookList list={this.state.listWantToRead}/>
                 </div>
                 <div className="bookshelf">
                     <BookshelfTitle title="Read"/>
-                  <BookList list={this.listRead}/>
+                  <BookList list={this.state.listRead}/>
                 </div>
               </div>
             </div>
