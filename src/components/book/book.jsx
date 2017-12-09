@@ -10,6 +10,7 @@ export type BookModel = {
     imgPath: string;
     title: string;
     authors: string;
+    bookIsMoved: Function;
 }
 
 export class Book extends React.PureComponent<BookModel,any> {
@@ -19,6 +20,11 @@ export class Book extends React.PureComponent<BookModel,any> {
         super(props)
         this.options = SelectOption();
     }
+
+    handleBookIsMoved = (bookMode: string) => {
+        console.log("change " +bookMode);
+    }
+
     render() {
         const styleBook = {
             width: 128,
@@ -28,7 +34,7 @@ export class Book extends React.PureComponent<BookModel,any> {
         return <div className="book">
             <div className="book-top">
                 <div className="book-cover" style={styleBook}></div>
-                <BookshelfChanger options={this.options}/>
+                <BookshelfChanger bookIsMoved={this.handleBookIsMoved} options={this.options}/>
             </div>
             <div className="book-title">{this.props.title}</div>
             <div className="book-authors">{this.props.authors}</div>

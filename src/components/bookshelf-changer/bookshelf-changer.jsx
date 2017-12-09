@@ -5,6 +5,7 @@ import './bookshelf-changer.style.css';
 
 export type BookshelfChangerPropTypes = {
     options: Array<Option>;
+    bookIsMoved: Function;
 }
 
 export type Option = {
@@ -16,7 +17,7 @@ export type Option = {
 export class BookshelfChanger extends React.PureComponent<BookshelfChangerPropTypes,any> {
 
     handleChange = (e) => {
-      console.log(e.target.value);
+      this.props.bookIsMoved(e.target.value);
     };
 
     renderOptions() {
