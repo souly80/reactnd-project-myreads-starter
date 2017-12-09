@@ -15,11 +15,17 @@ export type Option = {
 
 export class BookshelfChanger extends React.PureComponent<BookshelfChangerPropTypes,any> {
 
+    handleChange = (e) => {
+      console.log(e.target.value);
+    };
+
     renderOptions() {
         const{options} = this.props;
         let retValues: any[] = [];
         options.map((option: Option, index: number) => {
-            retValues.push(<option key={index} value={option.value} disabled={option.isDisabled}>{option.label}</option>);
+            retValues.push(option.isDisabled ?
+                <option key={index} value={option.value} disabled>{option.label}</option> :
+                <option key={index} value={option.value} >{option.label}</option>);
         });
         return retValues;
     }
@@ -27,7 +33,7 @@ export class BookshelfChanger extends React.PureComponent<BookshelfChangerPropTy
     render() {
         return <div>
             <div className="book-shelf-changer">
-                <select>
+                <select onChange={this.handleChange}>
                     {this.renderOptions()}
                 </select>
             </div>

@@ -4,7 +4,7 @@ import * as React from "react";
 import './book.style.css';
 import {BookshelfChanger} from "../bookshelf-changer/bookshelf-changer";
 import type {Option} from "../bookshelf-changer/bookshelf-changer";
-
+import SelectOption from "../model/select-options";
 export type BookModel = {
     id?: string | number;
     imgPath: string;
@@ -17,32 +17,7 @@ export class Book extends React.PureComponent<BookModel,any> {
     options: Array<Option>;
     constructor(props: BookModel) {
         super(props)
-        this.options = [];
-        this.options.push({
-            isDisabled: true,
-            value: "none",
-            label: "Move to..."
-        });
-        this.options.push({
-            isDisabled: false,
-            value: "currentlyReading",
-            label: "Currently Reading"
-        });
-        this.options.push({
-            isDisabled: false,
-            value: "wantToRead",
-            label: "Want to Read"
-        });
-        this.options.push({
-            isDisabled: false,
-            value: "read",
-            label: "Read"
-        });
-        this.options.push({
-            isDisabled: false,
-            value: "none",
-            label: "None"
-        });
+        this.options = SelectOption();
     }
     render() {
         const styleBook = {
