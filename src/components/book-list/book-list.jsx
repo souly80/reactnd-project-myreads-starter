@@ -17,7 +17,7 @@ export class BookList extends React.Component<BookListModel,any> {
                     return (<li key={index}>
                         <Book title={book.title}
                                 authors={book.authors}
-                                imgPath={book.imgPath}
+                                imgPath={book.imageLinks.thumbnail}
                                 id={book.id}/>
                     </li>);
                 })}

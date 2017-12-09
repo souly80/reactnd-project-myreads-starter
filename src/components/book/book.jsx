@@ -48,7 +48,7 @@ export class Book extends React.PureComponent<BookModel,any> {
         const styleBook = {
             width: 128,
             height: 193,
-            backgroundImage: this.props.imgPath
+            backgroundImage: `url(${this.props.imgPath})`
         };
         return <div className="book">
             <div className="book-top">
