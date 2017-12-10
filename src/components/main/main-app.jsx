@@ -91,14 +91,23 @@ export class MainApp extends React.PureComponent<BookModel,any> {
     addBook = (book, shelf) => {
         if(shelf === 'read') {
             this.state.listRead.push(book);
+            BooksAPI.update(book,shelf).then(data => {
+                console.log(data);
+            });
             this.setState({listRead: this.state.listRead});
         }
         else if (shelf === 'wantToRead') {
             this.state.listWantToRead.push(book);
+            BooksAPI.update(book,shelf).then(data => {
+                console.log(data);
+            });
             this.setState({listWantToRead: this.state.listWantToRead});
         }
         else if (shelf === 'currentlyReading') {
             this.state.listCurrentReading.push(book);
+            BooksAPI.update(book,shelf).then(data => {
+                console.log(data);
+            });
             this.setState({listCurrentReading: this.state.listCurrentReading});
         }
     }
