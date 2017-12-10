@@ -1,12 +1,14 @@
 // @flow
 
 import * as React from "react";
-
 import {Menu} from "../menu/Menu";
-import {BookshelfTitle} from "../bookshelf-title/bookshelf-title";
-import {Book} from "../book/book";
 import {BookList} from "../book-list/book-list";
 import * as BooksAPI from '../../services/BooksAPI';
+
+export type BookListModel = {
+    title: string;
+    list: Array;
+}
 
 export class MainApp extends React.PureComponent<BookModel,any> {
 
@@ -47,6 +49,60 @@ export class MainApp extends React.PureComponent<BookModel,any> {
         });
     }
 
+    handleBookFromListIsMoved = (id, shelf,list,listName) => {
+        var item = this.removeBook(id,shelf,list,listName);
+        this.addBook(item,shelf);
+    }
+
+    getBookByID = (list,id: string) => {
+        var result = null;
+        if(list) {
+             list.some(item => {
+                if (item.id === id) {
+                    result = item;
+                }
+            });
+        }
+        return result;
+    }
+
+    removeBook = (id, shelf,list,listName) => {
+        var item = null;
+        if (shelf === 'read')
+            item = this.getBookByID(list, id);
+        else if (shelf === 'wantToRead')
+            item = this.getBookByID(list, id);
+        else if (shelf === 'currentlyReading')
+            item = this.getBookByID(list, id);
+        if (item) {
+            list = list.filter(lItem => {
+                return lItem !== item;
+            });
+            if(listName === "listCurrentReading")
+                this.setState({listCurrentReading: list});
+            else if(listName === "listWantToRead")
+                this.setState({listWantToRead: list});
+            else if(listName === "listRead")
+                this.setState({listRead: list});
+        }
+        return item;
+    }
+
+    addBook = (book, shelf) => {
+        if(shelf === 'read') {
+            this.state.listRead.push(book);
+            this.setState({listRead: this.state.listRead});
+        }
+        else if (shelf === 'wantToRead') {
+            this.state.listWantToRead.push(book);
+            this.setState({listWantToRead: this.state.listWantToRead});
+        }
+        else if (shelf === 'currentlyReading') {
+            this.state.listCurrentReading.push(book);
+            this.setState({listCurrentReading: this.state.listCurrentReading});
+        }
+    }
+
     render() {
         return (<div className="app">
             {this.state.showSearchPage ? (
@@ -76,16 +132,13 @@ export class MainApp extends React.PureComponent<BookModel,any> {
                     <div className="list-books-content">
                         <div>
                             <div className="bookshelf">
-                                <BookshelfTitle title="Currently Reading"/>
-                                <BookList list={this.state.listCurrentReading}/>
+                                <BookList selectedValue="currentlyReading" listName="listCurrentReading" title="Currently Reading" bookFromListIsMoved={this.handleBookFromListIsMoved} list={this.state.listCurrentReading}/>
                             </div>
                             <div className="bookshelf">
-                                <BookshelfTitle title="Want to Read"/>
-                                <BookList list={this.state.listWantToRead}/>
+                                <BookList selectedValue="wantToRead" listName="listWantToRead" title="Want to Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listWantToRead}/>
                             </div>
                             <div className="bookshelf">
-                                <BookshelfTitle title="Read"/>
-                                <BookList list={this.state.listRead}/>
+                                <BookList selectedValue="read" listName="listRead" title="Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listRead}/>
                             </div>
                         </div>
                     </div>

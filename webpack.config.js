@@ -6,6 +6,15 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /.jsx?$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/,
+                include: [ __dirname ],
+                query: {
+                    presets: ['es2015', 'react']
+                }
+            },
+            {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: [
@@ -34,5 +43,7 @@ module.exports = {
     },
     devServer: {
         contentBase: './dist'
-    }
+    },
+    devtool: '#inline-source-map'
+
 };

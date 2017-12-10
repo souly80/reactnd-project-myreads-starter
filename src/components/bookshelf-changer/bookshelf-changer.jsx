@@ -5,19 +5,20 @@ import './bookshelf-changer.style.css';
 
 export type BookshelfChangerPropTypes = {
     options: Array<Option>;
-    bookIsMoved: Function;
+    onChanged: Function;
 }
 
 export type Option = {
     value: string;
     label: string;
     isDisabled: boolean;
+    selectedValue: string;
 }
 
 export class BookshelfChanger extends React.PureComponent<BookshelfChangerPropTypes,any> {
 
     handleChange = (e) => {
-      this.props.bookIsMoved(e.target.value);
+      this.props.onChanged(e.target.value);
     };
 
     renderOptions() {
@@ -34,7 +35,7 @@ export class BookshelfChanger extends React.PureComponent<BookshelfChangerPropTy
     render() {
         return <div>
             <div className="book-shelf-changer">
-                <select onChange={this.handleChange}>
+                <select defaultValue={this.props.selectedValue} onChange={this.handleChange}>
                     {this.renderOptions()}
                 </select>
             </div>
