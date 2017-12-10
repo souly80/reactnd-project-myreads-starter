@@ -35,7 +35,7 @@ export class BookshelfChanger extends React.PureComponent<BookshelfChangerPropTy
     render() {
         return <div>
             <div className="book-shelf-changer">
-                <select defaultValue={this.props.selectedValue} onChange={this.handleChange}>
+                <select value={this.props.selectedValue} onChange={this.handleChange}>
                     {this.renderOptions()}
                 </select>
             </div>
