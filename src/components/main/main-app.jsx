@@ -5,6 +5,7 @@ import {Menu} from "../menu/Menu";
 import {BookList} from "../book-list/book-list";
 import * as BooksAPI from '../../services/BooksAPI';
 import {Link} from "react-router-dom";
+import {getBookByID} from "../utils/utils";
 
 export class MainApp extends React.PureComponent<BookModel,any> {
 
@@ -50,26 +51,14 @@ export class MainApp extends React.PureComponent<BookModel,any> {
         this.addBook(item,shelf);
     }
 
-    getBookByID = (list,id: string) => {
-        var result = null;
-        if(list) {
-             list.some(item => {
-                if (item.id === id) {
-                    result = item;
-                }
-            });
-        }
-        return result;
-    }
-
     removeBook = (id, shelf,list,listName) => {
         var item = null;
         if (shelf === 'read')
-            item = this.getBookByID(list, id);
+            item = getBookByID(list, id);
         else if (shelf === 'wantToRead')
-            item = this.getBookByID(list, id);
+            item = getBookByID(list, id);
         else if (shelf === 'currentlyReading')
-            item = this.getBookByID(list, id);
+            item = getBookByID(list, id);
         if (item) {
             list = list.filter(lItem => {
                 return lItem !== item;

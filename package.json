@@ -30,7 +30,6 @@
   },
   "scripts": {
     "start": "webpack-dev-server --progress --colors --config ./webpack.config.js",
-    "start1": "react-scripts start",
     "build": "babel src --out-dir dist",
     "build:prod": "webpack",
     "test": "react-scripts test --env=jsdom",

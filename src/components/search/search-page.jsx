@@ -2,8 +2,31 @@
 
 import * as React from "react";
 import {Link} from "react-router-dom";
+import * as BooksAPI from '../../services/BooksAPI';
+import {BookList} from "../book-list/book-list";
+import {getBookByID} from "../utils/utils";
 
 export class SearchPage extends React.PureComponent<any,any> {
+
+    constructor(props) {
+        super(props)
+        this.state = { results: []};
+    }
+
+    changeHandler = (e) => {
+        if (e.key === 'Enter') {
+            BooksAPI.search(e.target.value).then(results => {
+                this.setState({results});
+            });
+        }
+    };
+
+    handleBookFromListIsMoved = (id, shelf,list,listName) => {
+        var book = getBookByID(list, id);
+        BooksAPI.update(book,shelf).then(data => {
+            console.log(data);
+        });
+    };
 
     render() {
         return <div className="search-books">
@@ -18,12 +41,15 @@ export class SearchPage extends React.PureComponent<any,any> {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-                    <input type="text" placeholder="Search by title or author"/>
-
+                    <input onKeyPress={this.changeHandler} type="text" placeholder="Search by title or author"/>
                 </div>
             </div>
-            <div className="search-books-results">
-                <ol className="books-grid"></ol>
+            <div className="bookshelf">
+                <BookList selectedValue="none"
+                          listName="listCurrentReading"
+                          title="Search List"
+                          bookFromListIsMoved={this.handleBookFromListIsMoved}
+                          list={this.state.results}/>
             </div>
         </div>
     }

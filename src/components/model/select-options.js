@@ -21,7 +21,7 @@ const SelectOption = () => {
         label: "Read"
     });
     options.push({
-        isDisabled: true,
+        isDisabled: false,
         value: "none",
         label: "None"
     });
