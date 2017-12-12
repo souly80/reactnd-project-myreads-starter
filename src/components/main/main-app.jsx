@@ -4,11 +4,7 @@ import * as React from "react";
 import {Menu} from "../menu/Menu";
 import {BookList} from "../book-list/book-list";
 import * as BooksAPI from '../../services/BooksAPI';
-
-export type BookListModel = {
-    title: string;
-    list: Array;
-}
+import {Link} from "react-router-dom";
 
 export class MainApp extends React.PureComponent<BookModel,any> {
 
@@ -113,49 +109,24 @@ export class MainApp extends React.PureComponent<BookModel,any> {
     }
 
     render() {
-        return (<div className="app">
-            {this.state.showSearchPage ? (
-                <div className="search-books">
-                    <div className="search-books-bar">
-                        <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
-                        <div className="search-books-input-wrapper">
-                            {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                            <input type="text" placeholder="Search by title or author"/>
-
-                        </div>
+        return <div className="list-books">
+            <Menu  title={'MyReads'}/>
+            <div className="list-books-content">
+                <div>
+                    <div className="bookshelf">
+                        <BookList selectedValue="currentlyReading" listName="listCurrentReading" title="Currently Reading" bookFromListIsMoved={this.handleBookFromListIsMoved} list={this.state.listCurrentReading}/>
                     </div>
-                    <div className="search-books-results">
-                        <ol className="books-grid"></ol>
+                    <div className="bookshelf">
+                        <BookList selectedValue="wantToRead" listName="listWantToRead" title="Want to Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listWantToRead}/>
+                    </div>
+                    <div className="bookshelf">
+                        <BookList selectedValue="read" listName="listRead" title="Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listRead}/>
                     </div>
                 </div>
-            ) : (
-                <div className="list-books">
-                    <Menu  title={'MyReads'}/>
-                    <div className="list-books-content">
-                        <div>
-                            <div className="bookshelf">
-                                <BookList selectedValue="currentlyReading" listName="listCurrentReading" title="Currently Reading" bookFromListIsMoved={this.handleBookFromListIsMoved} list={this.state.listCurrentReading}/>
-                            </div>
-                            <div className="bookshelf">
-                                <BookList selectedValue="wantToRead" listName="listWantToRead" title="Want to Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listWantToRead}/>
-                            </div>
-                            <div className="bookshelf">
-                                <BookList selectedValue="read" listName="listRead" title="Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listRead}/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="open-search">
-                        <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
-                    </div>
-                </div>
-            )}
-        </div>)
+            </div>
+            <div className="open-search">
+                <Link to="/search">Close</Link>
+            </div>
+        </div>
     }
 }
