@@ -13,27 +13,26 @@ export type BookListModel = {
     selectedValue: string;
 }
 
-export class BookList extends React.Component<BookListModel,any> {
+export const BookList = ({title, list, selectedValue, bookFromListIsMoved,listName}) => {
 
-    handleBookIsMoved = (id: string, shelf: string) => {
-        this.props.bookFromListIsMoved(id, shelf,this.props.list,this.props.listName);
-    }
+    var handleBookIsMoved = (id: string, shelf: string) => {
+        bookFromListIsMoved(id, shelf,list,listName);
+    };
 
-    render() {
-        return <div>
-            <BookshelfTitle title={this.props.title}/>
-            <div className="bookshelf-books">
-                <ol className="books-grid">
-                    {this.props.list && this.props.list.map((book: BookModel,index: number) => {
-                        return (<li key={index}>
-                            <Book selectedValue={this.props.selectedValue} bookIsMoved={this.handleBookIsMoved} title={book.title}
-                                    authors={book.authors}
-                                    imgPath={book.imageLinks.thumbnail}
-                                    id={book.id}/>
-                        </li>);
-                    })}
-                </ol>
-            </div>
+    return (<div>
+        <BookshelfTitle title={title}/>
+        <div className="bookshelf-books">
+            <ol className="books-grid">
+                {list && list.map((book: BookModel,index: number) => {
+                    return (<li key={index}>
+                        <Book selectedValue={selectedValue} bookIsMoved={handleBookIsMoved} title={book.title}
+                                authors={book.authors}
+                                imgPath={book.imageLinks.thumbnail}
+                                id={book.id}/>
+                    </li>);
+                })}
+            </ol>
         </div>
-    }
-}
+    </div>)
+
+};

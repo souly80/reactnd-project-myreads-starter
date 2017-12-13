@@ -2,15 +2,10 @@
 
 import * as React from "react";
 
-export type BookshelfTitlePropTypes = {
-    title: string;
-}
+export const BookshelfTitle = ({title}) => {
 
-export class BookshelfTitle extends React.PureComponent<BookshelfTitlePropTypes,any> {
-
-    render() {
-        return <div>
-            <h2 className="bookshelf-title">{this.props.title}</h2>
-        </div>
-    }
+    return (
+        <div>
+            <h2 className="bookshelf-title">{title}</h2>
+        </div>);
 }
