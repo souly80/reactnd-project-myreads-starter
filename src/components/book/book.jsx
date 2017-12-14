@@ -28,18 +28,17 @@ export class Book extends React.PureComponent<BookModel,any> {
     }
 
     render() {
+      const {title, authors, selectedValue, imgPath} = this.props;
         const styleBook = {
-            width: 128,
-            height: 193,
-            backgroundImage: `url(${this.props.imgPath})`
+            backgroundImage: `url(${imgPath})`
         };
         return <div className="book">
             <div className="book-top">
                 <div className="book-cover" style={styleBook}></div>
-                <BookshelfChanger selectedValue={this.props.selectedValue} onChanged={this.handleBookIsMoved} options={this.options}/>
+                <BookshelfChanger selectedValue={selectedValue} onChanged={this.handleBookIsMoved} options={this.options}/>
             </div>
-            <div className="book-title">{this.props.title}</div>
-            <div className="book-authors">{this.props.authors}</div>
+            <div className="book-title">{title}</div>
+            <div className="book-authors">{authors ? authors.join(','): ''}</div>
         </div>
     }
 }

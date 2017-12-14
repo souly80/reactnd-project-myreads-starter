@@ -18,12 +18,11 @@ export const BookList = ({title, list, selectedValue, bookFromListIsMoved,listNa
     var handleBookIsMoved = (id: string, shelf: string) => {
         bookFromListIsMoved(id, shelf,list,listName);
     };
-
     return (<div>
         <BookshelfTitle title={title}/>
         <div className="bookshelf-books">
             <ol className="books-grid">
-                {list && list.map((book: BookModel,index: number) => {
+                {list && list.length > 0 && list.map((book: BookModel,index: number) => {
                     return (<li key={index}>
                         <Book selectedValue={selectedValue} bookIsMoved={handleBookIsMoved} title={book.title}
                                 authors={book.authors}
