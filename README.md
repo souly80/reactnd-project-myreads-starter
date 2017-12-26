@@ -16,7 +16,7 @@ typing http://localhost:8080/ into your browser
 
 ## Flow checker
             flow
-##Linter
+## Linter
             npm run eslint:lint
             
 ## Search Page 
