@@ -15,8 +15,8 @@ export class SearchPage extends React.PureComponent<any,any> {
     }
 
     componentWillMount() {
-        BooksAPI.getAll().then((allData) => {
-            this.setState({allData});
+        BooksAPI.getAll().then((books) => {
+            this.setState({books});
         });
     }
 
@@ -30,7 +30,7 @@ export class SearchPage extends React.PureComponent<any,any> {
         var book = getBookByID(list, id);
         BooksAPI.update(book,shelf).then(data => {
             console.log(data);
-            BooksAPI.getAll().then(allData => this.setState({allData}));
+            BooksAPI.getAll().then(books => this.setState({books}));
 
         });
     };
@@ -44,7 +44,7 @@ export class SearchPage extends React.PureComponent<any,any> {
                 </div>
             </div>
             <div className="bookshelf">
-                <BookList allData={this.state.allData}
+                <BookList books={this.state.books}
                           title="Search List"
                           bookFromListIsMoved={this.handleBookFromListIsMoved}
                           list={this.state.results}/>

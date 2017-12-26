@@ -6,14 +6,14 @@ import type {BookModel} from "../book/book";
 import {BookshelfTitle} from "../bookshelf-title/bookshelf-title";
 
 
-export const BookList = ({allData, title, list, bookFromListIsMoved,listName}) => {
+export const BookList = ({books, title, list, bookFromListIsMoved,listName}) => {
 
     var handleBookIsMoved = (id: string, shelf: string) => {
         bookFromListIsMoved(id, shelf,list,listName);
     };
 
     var renderBookShelf = (index, book) => {
-        var shelf = getShelf(allData, book.id);
+        var shelf = getShelf(books, book.id);
         return (<li key={index}>
             <Book selectedValue={shelf}
                   bookIsMoved={handleBookIsMoved}
@@ -24,12 +24,12 @@ export const BookList = ({allData, title, list, bookFromListIsMoved,listName}) =
         </li>);
     };
 
-    var getShelf = (allData, id) => {
+    var getShelf = (books, id) => {
         var shelf = "none";
-        if(allData) {
-            for(var i =0;i<allData.length;i++) {
-                if(allData[i].id === id) {
-                    shelf = allData[i].shelf;
+        if(books) {
+            for(var i =0;i<books.length;i++) {
+                if(books[i].id === id) {
+                    shelf = books[i].shelf;
                 }
             }
         }

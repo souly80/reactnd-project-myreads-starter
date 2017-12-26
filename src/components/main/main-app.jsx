@@ -15,41 +15,25 @@ export class MainApp extends React.PureComponent<BookModel,any> {
             listCurrentReading: [],
             listWantToRead: [],
             listRead: [],
-            allData: [],
+            books: [],
             showSearchPage: false
         };
     }
 
     componentWillMount() {
-        this.refreshAllData();
-    }
-
-    refreshAllData = () =>{
-        BooksAPI.getAll().then((allData) => {
-            console.log(allData);
-            var listCurrentReading = [];
-            var listWantToRead = [];
-            var listRead = [];
-            allData.forEach(data => {
-                if(data.shelf === 'read') {
-                    listRead.push(data);
-                }
-                else if (data.shelf === 'wantToRead') {
-                    listWantToRead.push(data);
-                }
-                else if (data.shelf === 'currentlyReading') {
-                    listCurrentReading.push(data);
-                }
-            });
-            this.setState({listCurrentReading,listWantToRead,listRead, allData});
+        BooksAPI.getAll().then((books) => {
+            const listWantToRead = books.filter(book => book.shelf === 'wantToRead');
+            const listCurrentReading = books.filter(book => book.shelf === 'currentlyReading');
+            const listRead = books.filter(book => book.shelf === 'read');
+            this.setState({listCurrentReading,listWantToRead,listRead, books});
         });
-    };
+    }
 
     handleBookFromListIsMoved = (id, shelf,list,listName) => {
         var item = this.removeBook(id,shelf,list,listName);
         this.addBook(item,shelf);
-        BooksAPI.getAll().then((allData) => {
-            this.setState({allData});
+        BooksAPI.getAll().then((books) => {
+            this.setState({books});
         });
     }
 
@@ -70,6 +54,17 @@ export class MainApp extends React.PureComponent<BookModel,any> {
     }
 
     addBook = (book, shelf) => {
+        if (book.shelf !== shelf) {
+            BooksAPI.update(book, shelf).then(() => {
+                book.shelf = shelf
+
+                // Filter out the book and append it to the end of the list
+                // so it appears at the end of whatever shelf it was added to.
+                this.setState(state => ({
+                    books: state.books.filter(b => b.id !== book.id).concat([book])
+                }))
+            })
+        }
         if(shelf === 'read') {
             this.state.listRead.push(book);
             BooksAPI.update(book,shelf).then(data => {
@@ -104,13 +99,13 @@ export class MainApp extends React.PureComponent<BookModel,any> {
             <div className="list-books-content">
                 <div>
                     <div className="bookshelf">
-                        <BookList allData={this.state.allData} listName="listCurrentReading" title="Currently Reading" bookFromListIsMoved={this.handleBookFromListIsMoved} list={this.state.listCurrentReading}/>
+                        <BookList books={this.state.books} listName="listCurrentReading" title="Currently Reading" bookFromListIsMoved={this.handleBookFromListIsMoved} list={this.state.listCurrentReading}/>
                     </div>
                     <div className="bookshelf">
-                        <BookList allData={this.state.allData} listName="listWantToRead" title="Want to Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listWantToRead}/>
+                        <BookList books={this.state.books} listName="listWantToRead" title="Want to Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listWantToRead}/>
                     </div>
                     <div className="bookshelf">
-                        <BookList  allData={this.state.allData} listName="listRead" title="Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listRead}/>
+                        <BookList  books={this.state.books} listName="listRead" title="Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listRead}/>
                     </div>
                 </div>
             </div>
