@@ -2,7 +2,7 @@ const SelectOption = () => {
     var options = [];
     options.push({
         isDisabled: true,
-        value: "none",
+        value: "moveTo",
         label: "Move to..."
     });
     options.push({

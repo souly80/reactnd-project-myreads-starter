@@ -15,17 +15,12 @@ export class MainApp extends React.PureComponent<BookModel,any> {
             listCurrentReading: [],
             listWantToRead: [],
             listRead: [],
-            /**
-             * TODO: Instead of using this state variable to keep track of which page
-             * we're on, use the URL in the browser's address bar. This will ensure that
-             * users can use the browser's back and forward buttons to navigate between
-             * pages, as well as provide a good URL they can bookmark and share.
-             */
+            allData: [],
             showSearchPage: false
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         BooksAPI.getAll().then((allData) => {
             console.log(allData);
             var listCurrentReading = [];
@@ -42,7 +37,7 @@ export class MainApp extends React.PureComponent<BookModel,any> {
                     listCurrentReading.push(data);
                 }
             });
-            this.setState({listCurrentReading,listWantToRead,listRead});
+            this.setState({listCurrentReading,listWantToRead,listRead, allData});
         });
     }
 
@@ -52,13 +47,7 @@ export class MainApp extends React.PureComponent<BookModel,any> {
     }
 
     removeBook = (id, shelf,list,listName) => {
-        var item = null;
-        if (shelf === 'read')
-            item = getBookByID(list, id);
-        else if (shelf === 'wantToRead')
-            item = getBookByID(list, id);
-        else if (shelf === 'currentlyReading')
-            item = getBookByID(list, id);
+        var item = getBookByID(list, id);
         if (item) {
             list = list.filter(lItem => {
                 return lItem !== item;
@@ -95,6 +84,11 @@ export class MainApp extends React.PureComponent<BookModel,any> {
             });
             this.setState({listCurrentReading: this.state.listCurrentReading});
         }
+        else {
+            BooksAPI.update(book,shelf).then(data => {
+                console.log(data);
+            });
+        }
     }
 
     render() {
@@ -103,13 +97,13 @@ export class MainApp extends React.PureComponent<BookModel,any> {
             <div className="list-books-content">
                 <div>
                     <div className="bookshelf">
-                        <BookList selectedValue="currentlyReading" listName="listCurrentReading" title="Currently Reading" bookFromListIsMoved={this.handleBookFromListIsMoved} list={this.state.listCurrentReading}/>
+                        <BookList allData={this.state.allData} listName="listCurrentReading" title="Currently Reading" bookFromListIsMoved={this.handleBookFromListIsMoved} list={this.state.listCurrentReading}/>
                     </div>
                     <div className="bookshelf">
-                        <BookList selectedValue="wantToRead" listName="listWantToRead" title="Want to Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listWantToRead}/>
+                        <BookList allData={this.state.allData} listName="listWantToRead" title="Want to Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listWantToRead}/>
                     </div>
                     <div className="bookshelf">
-                        <BookList selectedValue="read" listName="listRead" title="Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listRead}/>
+                        <BookList  allData={this.state.allData} listName="listRead" title="Read" bookFromListIsMoved={this.handleBookFromListIsMoved}  list={this.state.listRead}/>
                     </div>
                 </div>
             </div>
