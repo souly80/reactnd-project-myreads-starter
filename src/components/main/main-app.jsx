@@ -21,6 +21,10 @@ export class MainApp extends React.PureComponent<BookModel,any> {
     }
 
     componentWillMount() {
+        this.refreshAllData();
+    }
+
+    refreshAllData = () =>{
         BooksAPI.getAll().then((allData) => {
             console.log(allData);
             var listCurrentReading = [];
@@ -39,11 +43,14 @@ export class MainApp extends React.PureComponent<BookModel,any> {
             });
             this.setState({listCurrentReading,listWantToRead,listRead, allData});
         });
-    }
+    };
 
     handleBookFromListIsMoved = (id, shelf,list,listName) => {
         var item = this.removeBook(id,shelf,list,listName);
         this.addBook(item,shelf);
+        BooksAPI.getAll().then((allData) => {
+            this.setState({allData});
+        });
     }
 
     removeBook = (id, shelf,list,listName) => {
